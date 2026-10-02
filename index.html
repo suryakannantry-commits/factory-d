@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FACTORY D</title>
+  <meta
+    name="description"
+    content="Factory D Operations - Production Management"
+  >
+
+  <meta name="theme-color" content="#0f5c4d">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f8f6;
+      color: #17352f;
+      min-height: 100vh;
+    }
+
+    button {
+      font: inherit;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      min-height: 100vh;
+      margin: auto;
+      background: #f5f8f6;
+      padding-bottom: 82px;
+    }
+
+    .topbar {
+      background: #0f5c4d;
+      color: white;
+      padding: 22px 20px 24px;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .content {
+      padding: 18px 16px;
+    }
+
+    .greeting {
+      font-size: 14px;
+      color: #64756f;
+      margin-bottom: 5px;
+    }
+
+    .date {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 22px 0 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2ebe7;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 5px 18px rgba(20, 70, 55, 0.06);
+    }
+
+    .stat-label {
+      color: #73827d;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0f5c4d;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .quick-action {
+      background: white;
+      border: 1px solid #e2ebe7;
+      border-radius: 17px;
+      padding: 16px 12px;
+      text-align: left;
+      min-height: 82px;
+      box-shadow: 0 5px 18px rgba(20, 70, 55, 0.05);
+      color: #17352f;
+    }
+
+    .quick-icon {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .quick-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .activity {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .activity-dot {
+      width: 10px;
+      height: 10px;
+      background: #66a995;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .activity-text {
+      font-size: 13px;
+      color: #53645e;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.97);
+      border-top: 1px solid #dfe8e4;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 8px 5px calc(8px + env(safe-area-inset-bottom));
+      z-index: 10;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: #71807b;
+      padding: 7px 2px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn.active {
+      color: #0f5c4d;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .hero-card {
+      background: #e6f2ed;
+      border: 1px solid #d3e8df;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f5c4d;
+      margin-bottom: 7px;
+    }
+
+    .hero-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #52665f;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px 15px;
+      color: #71807b;
+    }
+
+    @media (min-width: 700px) {
+      body {
+        padding: 20px;
+      }
+
+      .app {
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 15px 45px rgba(20, 70, 55, 0.12);
+      }
+
+      .bottom-nav {
+        bottom: 20px;
+        border: 1px solid #dfe8e4;
+        border-radius: 20px;
+        width: calc(100% - 40px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">FACTORY D</div>
+    <div class="subtitle">Value Added Factory D</div>
+  </header>
+
+  <main class="content">
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+
+      <div class="greeting">Good morning 👋</div>
+      <div class="date" id="todayDate"></div>
+
+      <div class="hero-card">
+        <div class="hero-title">Today's Operations</div>
+        <div class="hero-text">
+          Production, inventory and batch activities in one place.
+        </div>
+      </div>
+
+      <div class="section-title">Today's Overview</div>
+
+      <div class="summary-grid">
+
+        <div class="card">
+          <div class="stat-label">Production</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Target</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Pending Tasks</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Open Issues</div>
+          <div class="stat-value">0</div>
+        </div>
+
+      </div>
+
+      <div class="section-title">Quick Actions</div>
+
+      <div class="quick-grid">
+
+        <button class="quick-action" onclick="openPage('production')">
+          <div class="quick-icon">🏭</div>
+          <div class="quick-name">Start Production</div>
+        </button>
+
+        <button class="quick-action" onclick="openPage('production')">
+          <div class="quick-icon">📋</div>
+          <div class="quick-name">Today's Production</div>
+        </button>
+
+        <button class="quick-action" onclick="openPage('batches')">
+          <div class="quick-icon">🔎</div>
+          <div class="quick-name">Search Batch</div>
+        </button>
+
+        <button class="quick-action" onclick="openPage('inventory')">
+          <div class="quick-icon">📦</div>
+          <div class="quick-name">Inventory</div>
+        </button>
+
+        <button class="quick-action" onclick="openPage('reports')">
+          <div class="quick-icon">📊</div>
+          <div class="quick-name">Reports</div>
+        </button>
+
+        <button class="quick-action" onclick="openPage('admin')">
+          <div class="quick-icon">⚙️</div>
+          <div class="quick-name">More / Admin</div>
+        </button>
+
+      </div>
+
+      <div class="section-title">Recent Activity</div>
+
+      <div class="card">
+        <div class="activity">
+          <div class="activity-dot"></div>
+          <div class="activity-text">
+            No production activity recorded yet.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PRODUCTION -->
+    <section id="production" class="page">
+
+      <div class="section-title">Production</div>
+
+      <div class="hero-card">
+        <div class="hero-title">Today's Production</div>
+        <div class="hero-text">
+          Create a batch and follow the production workflow step by step.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Production Workflow</div>
+        <br>
+        <div class="activity-text">
+          Nut → Variety → Flavour → Pack Size → Batch
+        </div>
+        <br>
+        <div class="activity-text">
+          RM Issue → Processing → Seasoning → Cooling → QC → Packing → FG
+        </div>
+      </div>
+
+    </section>
+
+    <!-- INVENTORY -->
+    <section id="inventory" class="page">
+
+      <div class="section-title">Inventory</div>
+
+      <div class="summary-grid">
+
+        <div class="card">
+          <div class="stat-label">Raw Materials</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Packing Materials</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Finished Goods</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Low Stock</div>
+          <div class="stat-value">0</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- BATCHES -->
+    <section id="batches" class="page">
+
+      <div class="section-title">Search / Batches</div>
+
+      <div class="card">
+        <div class="empty">
+          🔎<br><br>
+          Batch search will be available here.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- REPORTS -->
+    <section id="reports" class="page">
+
+      <div class="section-title">Reports</div>
+
+      <div class="quick-grid">
+
+        <div class="card">
+          <div class="stat-label">Daily Production</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Manpower</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Damage / Wastage</div>
+          <div class="stat-value">0</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">QC Reports</div>
+          <div class="stat-value">0</div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ADMIN -->
+    <section id="admin" class="page">
+
+      <div class="section-title">More / Admin</div>
+
+      <div class="hero-card">
+        <div class="hero-title">Factory D Operations</div>
+        <div class="hero-text">
+          Products, varieties, flavours, SKUs, processes,
+          documents, users and system configuration.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="activity-text">
+          Admin configuration will be connected to the database
+          in the next development stage.
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+
+    <button class="nav-btn active" onclick="openPage('home', this)">
+      <span class="nav-icon">⌂</span>
+      Home
+    </button>
+
+    <button class="nav-btn" onclick="openPage('production', this)">
+      <span class="nav-icon">🏭</span>
+      Production
+    </button>
+
+    <button class="nav-btn" onclick="openPage('inventory', this)">
+      <span class="nav-icon">📦</span>
+      Inventory
+    </button>
+
+    <button class="nav-btn" onclick="openPage('batches', this)">
+      <span class="nav-icon">🔎</span>
+      Batches
+    </button>
+
+    <button class="nav-btn" onclick="openPage('reports', this)">
+      <span class="nav-icon">•••</span>
+      More
+    </button>
+
+  </nav>
+
+</div>
+
+<script>
+
+  const dateElement = document.getElementById("todayDate");
+
+  const today = new Date();
+
+  dateElement.textContent = today.toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+  function openPage(pageId, button) {
+
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    const selectedPage = document.getElementById(pageId);
+
+    if (selectedPage) {
+      selectedPage.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    if (button) {
+      button.classList.add("active");
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+</script>
+
+</body>
+</html>
